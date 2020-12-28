@@ -11,8 +11,11 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' } " Plugin manager and LSP
 " coc-clangd, coc-java, coc-json, coc-xml
 Plug 'nathanaelkane/vim-indent-guides' " Indentation guides
 Plug 'luochen1990/rainbow' " Rainbow parentheses
+Plug 'preservim/nerdtree' " File explorer
 
 Plug 'rakr/vim-one' " Color scheme
+Plug 'vim-airline/vim-airline' " Custom status bar
+Plug 'vim-airline/vim-airline-themes' " Themes for status bar
 
 Plug 'octol/vim-cpp-enhanced-highlight' " C++ highlighting
 Plug 'vim-crystal/vim-crystal' " Crystal support
@@ -97,9 +100,21 @@ let g:rainbow_conf = {
     \}
 \}
 
+"" NERDTree
+autocmd VimEnter * NERDTree | wincmd p " Enable NERDTree when entering Vim
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif " Exit if NERDTree is the only window left
+autocmd BufWinEnter * silent NERDTreeMirror " Copy NERDTree in other tabs
+
 "" vim-one
 colorscheme one " Set the color scheme
 let g:one_allow_italics = 1 " Use italics
+
+"" vim-airline
+let g:airline_powerline_fonts = 1 " Use powerline
+
+"" vim-airline-themes
+let g:airline_theme = 'one' " Use vim-one theme for status bar
 
 "" vim-crystal
 " Highlight variables and methods as identifiers
@@ -142,7 +157,6 @@ highlight! link coffeeSpaceError NONE
 "" Editor Settings
 set autoread " Automatically re-read files modified outside of Vim
 set backspace=indent,eol,start " Allow backspacing over indentation, line breaks and insertion starts
-set splitright " Set new veritacl buffers to split to the right
 set mouse=a " Cursor goes wherever clicked with mouse
 autocmd VimEnter,BufNewFile *.xml set shiftwidth=2 " Set the indentation to two spaces for XML files
 autocmd VimEnter,BufNewFile *.xml set tabstop=2 " Set the tabulation stop to two spaces for XML files
@@ -183,30 +197,7 @@ set clipboard=unnamedplus
 
 
 
-""" Commands
-
-"" Start a terminal in a new buffer with a command
-function! s:StartTerminal(command, errmsg)
-    " If the command isn't empty
-    if a:command != ''
-        " Save the file
-        exec 'w'
-        " Create a new buffer
-        exec 'vnew'
-        " Start a terminal with the command
-        exec 'term ' . a:command
-        " Be able to insert text
-        exec 'startinsert'
-    else
-        " Highlight output as error
-        echohl ErrorMsg
-        echo '[ERROR]'
-        " Remove highlighting
-        echohl Normal
-        " Echo the message
-        echon ' ' . a:errmsg
-    endif
-endfunction
+""" Custom functions
 
 " Commands:
 " haxe: sudo add-apt-repository ppa:haxe/releases -y
@@ -333,8 +324,25 @@ function! s:CompileAndRun()
     
     " Get the command
     let l:command = get(l:commandMap, &filetype, '')
-    " Start a terminal
-    call s:StartTerminal(l:command, 'No command defined to execute a ' . &filetype . ' file.')
+    
+    " If can't execute the file, show an error
+    if l:command == ''
+        echohl ErrorMsg " Highligh echoes red
+        " Echo "[ERROR]"
+        echo '[ERROR]'
+        echohl Normal " Remove echo highlighting
+        " Give an error message
+        echon &filetype . ' files cannot be executed.'
+    else
+        " Save the current file
+        exec 'w'
+        " Create a new buffer
+        exec 'belowright vnew'
+        " Start a terminal
+        exec 'term ' . l:command
+        " Enable insert mode
+        exec 'startinsert'
+    endif
 endfunction
 
 " Commands:
@@ -390,9 +398,10 @@ endfunction
 "       CC=clang make (requires Clang)
 "       sudo mv bin/rappel /usr/bin
 
-" Call the function StartREPL (<F10>)
-map <F10> :call <SID>StartREPL()<CR>
-imap <F10> <ESC>:call <SID>StartREPL()<CR>
+let g:repl_type = '' " The filetype of the REPL (which language the REPL is for)
+autocmd BufWinLeave * if bufwinnr("term") > 0 && &filetype == g:repl_type |
+    \bdelete! term | endif " Stop the REPL when closing the code buffer
+autocmd BufWinEnter * call s:StartREPL() " Start a REPL when entering a buffer
 "" Runs a REPL using the filetype
 function! s:StartREPL()
     " The possible commands
@@ -439,8 +448,17 @@ function! s:StartREPL()
     
     " Get the command
     let l:command = get(l:commandMap, &filetype, '')
-    " Start a terminal
-    call s:StartTerminal(l:command, 'No REPL command defined for "' . &filetype . '".')
+    
+    " If a REPL can be started, start it
+    if l:command != ''
+        let g:repl_type = &filetype " Set the REPL type
+        " Create a new buffer at the bottom 1/4 the size
+        exec 'belowright ' . (&lines / 4) . ' new'
+        " Start a terminal
+        exec 'term ' . l:command
+        " Go back to the code area
+        exec 'wincmd p'
+    endif
 endfunction
 
 "" Send file to desktop
