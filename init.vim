@@ -15,7 +15,6 @@ Plug 'preservim/nerdtree' " File explorer
 
 Plug 'rakr/vim-one' " Color scheme
 Plug 'vim-airline/vim-airline' " Custom status bar
-Plug 'vim-airline/vim-airline-themes' " Themes for status bar
 
 Plug 'octol/vim-cpp-enhanced-highlight' " C++ highlighting
 Plug 'vim-crystal/vim-crystal' " Crystal support
@@ -72,7 +71,7 @@ autocmd VimEnter,BufNewFile *.hy RainbowToggleOn " Toggle the parentheses on Hy 
 autocmd VimEnter,BufNewFile *.java RainbowToggleOn " Toggle the parentheses on Java files
 " Configuration:
 " Java -> Color '{' and '}'
-" Lisps -> Color '(', ')' and ','
+" Lisps -> Color '(', ')', '[', ']', '{', '}' and ','
 let s:colors = ['red', 'yellow', 'lightgreen', 'cyan', 'blue', 'magenta'] " The colors for the parentheses
 let g:rainbow_conf = {
     \'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
@@ -112,8 +111,6 @@ let g:one_allow_italics = 1 " Use italics
 
 "" vim-airline
 let g:airline_powerline_fonts = 1 " Use powerline
-
-"" vim-airline-themes
 let g:airline_theme = 'one' " Use vim-one theme for status bar
 
 "" vim-crystal
@@ -192,7 +189,7 @@ set pastetoggle=<F2> " Set the paste toggle to be (<F2>)
 set hlsearch " Highlight words found using the search
 
 "" Clipboard settings
-set clipboard=unnamedplus
+set clipboard=unnamedplus " Use "+ register for clipboard
 
 
 
@@ -281,7 +278,7 @@ function! s:CompileAndRun()
     let l:name = expand('%:t:r') " The file name without the extension
     
     " The possible commands
-    let l:commandMap = {
+    let l:command_map = {
         \'haxe'      : 'haxe --main ' . l:file . ' --interp',
         \'dart'      : 'dart run ' . l:file,
         \'java'      : 'java ' . l:file,
@@ -323,7 +320,7 @@ function! s:CompileAndRun()
     \}
     
     " Get the command
-    let l:command = get(l:commandMap, &filetype, '')
+    let l:command = get(l:command_map, &filetype, '')
     
     " If can't execute the file, show an error
     if l:command == ''
@@ -398,14 +395,26 @@ endfunction
 "       CC=clang make (requires Clang)
 "       sudo mv bin/rappel /usr/bin
 
-let g:repl_type = '' " The filetype of the REPL (which language the REPL is for)
-autocmd BufWinLeave * if bufwinnr("term") > 0 && &filetype == g:repl_type |
-    \bdelete! term | endif " Stop the REPL when closing the code buffer
+"augroup test
+"    autocmd!
+"    autocmd BufLeave * echomsg "BufLeave, " . bufname('%') . ", " . bufnr('%')
+"    autocmd BufWinLeave * echomsg "BufWinLeave, " . bufwinnr('%') . ", " . bufwinid('%')
+"    autocmd BufHidden * echomsg "BufHidden"
+"    autocmd BufUnload * echomsg "BufUnload"
+"    autocmd BufDelete * echomsg "BufDelete"
+"    autocmd BufWipeout * echomsg "BufWipeout"
+"augroup END
+
+let s:code_repl_nrs = {} " A map of (code buffer number) - (REPL buffer number)
+let s:last_leaved_buffer_nr = -1 " The number of the last leaved buffer
+
+autocmd BufLeave,BufDelete * let s:last_leaved_buffer_nr = bufnr('%')
+autocmd BufUnload * call <SID>StopREPL(s:last_leaved_buffer_nr) " Stop the REPL when closing the code buffer
 autocmd BufWinEnter * call s:StartREPL() " Start a REPL when entering a buffer
 "" Runs a REPL using the filetype
 function! s:StartREPL()
     " The possible commands
-    let l:commandMap = {
+    let l:command_map = {
         \'haxe'      : 'npx haxe-repl',
         \'dart'      : '',
         \'java'      : 'jshell',
@@ -447,17 +456,26 @@ function! s:StartREPL()
     \}
     
     " Get the command
-    let l:command = get(l:commandMap, &filetype, '')
+    let l:command = get(l:command_map, &filetype, '')
     
     " If a REPL can be started, start it
     if l:command != ''
-        let g:repl_type = &filetype " Set the REPL type
+        let l:code_nr = bufnr('%') " Get the number of the code buffer
         " Create a new buffer at the bottom 1/4 the size
         exec 'belowright ' . (&lines / 4) . ' new'
+        let s:code_repl_nrs[l:code_nr] = bufnr('%') " Save the number pair
         " Start a terminal
         exec 'term ' . l:command
         " Go back to the code area
         exec 'wincmd p'
+    endif
+endfunction
+
+"" Stops a REPL given the number of the current buffer
+function! s:StopREPL(buffer_nr)
+    let l:repl_nr = get(s:code_repl_nrs, a:buffer_nr . '', -1) " Get the number of the REPL buffer
+    if l:repl_nr != -1
+        exec l:repl_nr . 'bdelete!'
     endif
 endfunction
 
@@ -467,4 +485,3 @@ function! s:SendToDesktop()
     exec "w"
     exec "!cpdt %:p"
 endfunction
-
