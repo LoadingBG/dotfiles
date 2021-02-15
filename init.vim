@@ -4,30 +4,33 @@
 call plug#begin('~/.vim/bundle') " Initialize Vim-plug
 
 " Vim-plug plug-ins below
-"Plug 'loadingbg/vimcord', { 'branch': 'testings' } " Discord rich presence
-
-Plug 'neoclide/coc.nvim', { 'branch': 'release' } " Plugin manager and LSP
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }                " Plugin manager and LSP
 " coc extensions: coc-marketplace, coc-pairs, coc-snippets, coc-vimlsp,
-" coc-clangd, coc-java, coc-json, coc-xml
-Plug 'nathanaelkane/vim-indent-guides' " Indentation guides
-Plug 'luochen1990/rainbow' " Rainbow parentheses
-Plug 'preservim/nerdtree' " File explorer
+"                 coc-clangd, coc-java, coc-json, coc-xml
+Plug 'nathanaelkane/vim-indent-guides'                           " Indentation guides
+Plug 'luochen1990/rainbow'                                       " Rainbow parentheses
+Plug 'preservim/nerdtree'                                        " File explorer
+Plug 'mg979/vim-visual-multi'                                    " Support for multiple cursors
+Plug 'floobits/floobits-neovim', { 'do': 'UpdateRemotePlugins' } " Pair programming support
 
-Plug 'rakr/vim-one' " Color scheme
-Plug 'vim-airline/vim-airline' " Custom status bar
+Plug 'rakr/vim-one'                                              " Color scheme
+Plug 'vim-airline/vim-airline'                                   " Custom status bar
+Plug 'ntpeters/vim-airline-colornum'                             " Colors the row number the same as the status bar
 
-Plug 'octol/vim-cpp-enhanced-highlight' " C++ highlighting
-Plug 'vim-crystal/vim-crystal' " Crystal support
-Plug 'neovimhaskell/haskell-vim' " Haskell highlighting
-Plug 'udalov/kotlin-vim' " Kotlin support
-Plug 'dart-lang/dart-vim-plugin' " Dart support
-Plug 'elixir-editors/vim-elixir' " Elixir support
-Plug 'kchmck/vim-coffee-script' " Coffeescript support
-Plug 'JuliaEditorSupport/julia-vim' " Julia support
-Plug 'zah/nim.vim' " Nim support
-Plug 'jdonaldson/vaxe' " Haxe support
-Plug 'hylang/vim-hy' " Hy support
-Plug 'zigford/vim-powershell' " Powershell support
+Plug 'octol/vim-cpp-enhanced-highlight'                          " C++ highlighting
+Plug 'NLKNguyen/vim-maven-syntax'
+Plug 'mattn/emmet-vim'                                           " HTML advanced support
+Plug 'vim-crystal/vim-crystal'                                   " Crystal support
+Plug 'neovimhaskell/haskell-vim'                                 " Haskell highlighting
+Plug 'udalov/kotlin-vim'                                         " Kotlin support
+Plug 'dart-lang/dart-vim-plugin'                                 " Dart support
+Plug 'elixir-editors/vim-elixir'                                 " Elixir support
+Plug 'kchmck/vim-coffee-script'                                  " Coffeescript support
+Plug 'JuliaEditorSupport/julia-vim'                              " Julia support
+Plug 'zah/nim.vim'                                               " Nim support
+Plug 'jdonaldson/vaxe'                                           " Haxe support
+Plug 'hylang/vim-hy'                                             " Hy support
+Plug 'zigford/vim-powershell'                                    " Powershell support
 " Vim-plug plug-ins above
 
 call plug#end() " End Vim-plug
@@ -37,11 +40,9 @@ call plug#end() " End Vim-plug
 
 
 
-""" Vundle plugins configuration
 
-"" vimcord
-"let g:vimcord_filepath = '~/.vim/bundle' " Set the filepath to the plugin
-"let g:vimcord_python_executable = '/mnt/c/Users/troya/AppData/Local/Programs/Python/Python38-32/python.exe' " Set the python executabe to the one in Windows
+
+""" Vundle plugins configuration
 
 "" coc.nvim coc-snippets
 imap <C-l> <Plug>(coc-snippets-expand)
@@ -58,34 +59,37 @@ function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-let g:coc_snippet_next = '<Tab>'
+let g:coc_snippet_next = '<Tab>' " Select next part of snippet (<Tab>)
+set shortmess+=c
 
 "" vim-indent-guides
-let g:indent_guides_enable_on_vim_startup = 1 " Start indentation guides on startup
-let g:indent_guides_guide_size = 1 " The guide size is 1
+if &filetype != 'nerdtree' && &filetype != 'term'
+    let g:indent_guides_enable_on_vim_startup = 1 " Start indentation guides on startup
+endif
+let g:indent_guides_guide_size = 1            " The guide size is 1
 
 "" rainbow
-autocmd VimEnter,BufNewFile *.clj RainbowToggleOn " Toggle the parentheses on Clojure files
+autocmd VimEnter,BufNewFile *.clj  RainbowToggleOn " Toggle the parentheses on Clojure files
 autocmd VimEnter,BufNewFile *.lisp RainbowToggleOn " Toggle the parentheses on Lisp files
-autocmd VimEnter,BufNewFile *.hy RainbowToggleOn " Toggle the parentheses on Hy files
+autocmd VimEnter,BufNewFile *.hy   RainbowToggleOn " Toggle the parentheses on Hy files
 autocmd VimEnter,BufNewFile *.java RainbowToggleOn " Toggle the parentheses on Java files
 " Configuration:
 " Java -> Color '{' and '}'
 " Lisps -> Color '(', ')', '[', ']', '{', '}' and ','
 let s:colors = ['red', 'yellow', 'lightgreen', 'cyan', 'blue', 'magenta'] " The colors for the parentheses
 let g:rainbow_conf = {
-    \'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-    \'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
-    \'guis': [''],
-    \'cterms': [''],
-    \'operators': '_,_',
+    \'guifgs':      ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+    \'ctermfgs':    ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+    \'guis':        [''],
+    \'cterms':      [''],
+    \'operators':   '_,_',
     \'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
     \'separately': {
         \'*': {},
         \'java': {
-            \'operators': '',
+            \'operators':   '',
             \'parentheses': ['start=/{/ end=/}/ fold'],
-            \'ctermfgs': s:colors
+            \'ctermfgs':    s:colors
         \},
         \'clojure': {
             \'ctermfgs': s:colors
@@ -100,42 +104,70 @@ let g:rainbow_conf = {
 \}
 
 "" NERDTree
-autocmd VimEnter * NERDTree | wincmd p " Enable NERDTree when entering Vim
+autocmd VimEnter * NERDTree | wincmd p      " Enable NERDTree when entering Vim
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif " Exit if NERDTree is the only window left
+    \ quit | endif                          " Exit if NERDTree is the only window left
 autocmd BufWinEnter * silent NERDTreeMirror " Copy NERDTree in other tabs
 
 "" vim-one
-colorscheme one " Set the color scheme
+colorscheme one             " Set the color scheme to vim-one
 let g:one_allow_italics = 1 " Use italics
 
 "" vim-airline
-let g:airline_powerline_fonts = 1 " Use powerline
-let g:airline_theme = 'one' " Use vim-one theme for status bar
+let g:airline_powerline_fonts = 1                    " Use powerline
+let g:airline_theme = 'one'                          " Use vim-one theme for status bar
+let g:airline#extensions#branch#enabled = 1          " Make the Git branch appear in status line
+let g:airline#extensions#tabline#enabled = 1         " Enable tabline
+let g:airline#extensions#tabline#buffer_nr_show = 0  " Don't show buffer numbers in tabline
+let g:airline#extensions#tabline#buffer_idx_mode = 1 " Show buffer indices in tabline
+let g:airline#extensions#tabline#current_first = 0   " Don't show the current buffer as first in tabline
+let g:airline#extensions#tabline#show_splits = 1     " Show splits in tabline
+let g:airline#extensions#hunks#enabled = 0           " Disable showing a summary of changed hunks under source control
+" Switch to previous tab ([b)
+nmap [b <Plug>AirlineSelectPrevTab
+" Switch to next tab (]b)
+nmap ]b <Plug>AirlineSelectNextTab
+
+"" vim-cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1     " Highlight class scope
+let g:cpp_member_variable_highlight = 1 " Highlight member variables
+let g:cpp_class_decl_highlight = 1      " Highlight class declarations
+
+"" vim-maven-syntax
+
+"" vim-clojure-static
+" Highlight different words
+let g:clojure_syntax_keywords = {
+    \'clojureDefine': ['defproject'],
+    \'clojureFunc':   ['a/>!', 'a/>!!', 'a/<!', 'a/<!!', 'a/alts!', 'a/alts!!', 'a/chan', 'a/promise-chan', 'a/timeout',
+                      \'a/take!', 'a/put!', 'a/close!', 'a/pipe', 'inst-ms'],
+    \'clojureMacro':  ['a/go', 'a/go-loop', 'a/alt!', 'a/alt!!', 'a/thread']
+\}
+let g:clojure_fuzzy_indent_patterns = ['^a/go-loop'] " Indent these words like 'loop'
 
 "" vim-crystal
 " Highlight variables and methods as identifiers
 highlight! link crystalLocalVariableOrMethod Identifier
 
 "" haskell-vim
-let g:haskell_enable_quantification = 1   " Enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " Enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " Enable highlighting of `proc`
+let g:haskell_enable_quantification   = 1 " Enable highlighting of `forall`
+let g:haskell_enable_recursivedo      = 1 " Enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax      = 1 " Enable highlighting of `proc`
 let g:haskell_enable_pattern_synonyms = 1 " Enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " Enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " Enable highlighting of `static`
-let g:haskell_backpack = 1                " Enable highlighting of backpack keywords
+let g:haskell_enable_typeroles        = 1 " Enable highlighting of type roles
+let g:haskell_enable_static_pointers  = 1 " Enable highlighting of `static`
+let g:haskell_backpack                = 1 " Enable highlighting of backpack keywords
 
-let g:haskell_indent_if = 3 " Indent 'then' and 'else' by 3 spaces from the corresponding 'if'
-let g:haskell_indent_case = 2 " Indent cases of 'case' by 2 spaces
-let g:haskell_indent_before_where = 2 " Indent 'where' by 2 spaces
+let g:haskell_indent_if               = 3 " Indent 'then' and 'else' by 3 spaces from the corresponding 'if'
+let g:haskell_indent_case             = 2 " Indent cases of 'case' by 2 spaces
+let g:haskell_indent_before_where     = 2 " Indent 'where' by 2 spaces
 let g:haskell_indent_after_bare_where = 2 " Indent bindings by 2 spaces after corresponding base 'where'
-let g:haskell_indent_where = 6 " Indent bindings by 6 spaces after corresponding not bare 'where'
-let g:haskell_indent_guard = 2 " Indent guard clauses by 2 spaces
+let g:haskell_indent_where            = 6 " Indent bindings by 6 spaces after corresponding not bare 'where'
+let g:haskell_indent_guard            = 2 " Indent guard clauses by 2 spaces
 
 "" dart-vim-plugin
 let g:dart_html_in_string = v:true " Enable highlighting for HTML in strings
-let g:dart_style_guide = 4 " Set the indentation to 4 spaces
+let g:dart_style_guide    = 4      " Set the indentation to 4 spaces
 
 "" vim-coffee-script
 " Don't highlight trailing spaces
@@ -149,48 +181,75 @@ highlight! link coffeeSpaceError NONE
 
 
 
+
 """ Neovim settings
 
 "" Editor Settings
-set autoread " Automatically re-read files modified outside of Vim
-set backspace=indent,eol,start " Allow backspacing over indentation, line breaks and insertion starts
-set mouse=a " Cursor goes wherever clicked with mouse
+filetype plugin indent on                          " Automatically detect file types
+set autoread                                       " Automatically re-read files modified outside of Vim
+set backspace=indent,eol,start                     " Allow backspacing over indentation, line breaks and insertion starts
+set mouse=a                                        " Cursor goes wherever clicked with mouse
+set updatetime=300                                 " Save swap file to disk after 300ms of idling
+" Remove the previous word (<Ctrl-Backspace>)
+imap <C-BS> <C-W>
+set statusline+=%#warningmsg#                      " Add warning messages to status line
+set statusline+=%*                                 " Add miscelaneous? messages to status line
+autocmd FocusLost * silent! wall                   " Save all buffers when focus is lost
 autocmd VimEnter,BufNewFile *.xml set shiftwidth=2 " Set the indentation to two spaces for XML files
-autocmd VimEnter,BufNewFile *.xml set tabstop=2 " Set the tabulation stop to two spaces for XML files
-autocmd VimEnter,BufNewFile *.hs set shiftwidth=2 " Set the indentation to two spaces for Haskell files
-autocmd VimEnter,BufNewFile *.rb set shiftwidth=4 " Set the indentation to four spaces for Ruby files
-autocmd VimEnter,BufNewFile *.ex set shiftwidth=4 " Set the indentation to four spaces for Elixir files
-let g:asmsyntax = 'nasm' " Set the syntax for Assembly files to NASM
-let g:python_host_prog = '/usr/bin/python2' " Set the executable for Python 2 host to be '/usr/bin/python2'
-let g:python3_host_prog = '/usr/bin/python3' " Set the executable for Python 3 host to be '/usr/bin/python3'
+autocmd VimEnter,BufNewFile *.xml set tabstop=2    " Set the tabulation stop to two spaces for XML files
+autocmd VimEnter,BufNewFile *.hs set shiftwidth=2  " Set the indentation to two spaces for Haskell files
+autocmd VimEnter,BufNewFile *.rb set shiftwidth=4  " Set the indentation to four spaces for Ruby files
+let g:asmsyntax = 'nasm'                           " Set the syntax for Assembly files to NASM
+let g:python_host_prog = '/usr/bin/python2'        " Set the executable for Python 2 host to be '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'       " Set the executable for Python 3 host to be '/usr/bin/python3'
 
 "" UI Settings
-syntax on " Syntax highlighting
-set number " Line numbers
-set ruler " Show position of cursor
-set title " Show name of file and the path to it
-set background=dark " Use colors suitable for dark background
-set termguicolors " Set terminal's GUI colors the ones from the color scheme
+syntax on                                " Syntax highlighting
+set number relativenumber                " Line numbers
+set ruler                                " Show position of cursor
+set title                                " Show name of file and the path to it
+set background=dark                      " Use colors suitable for dark background
+set termguicolors                        " Enable all colors
+set cursorline                           " Set the line of the cursor to be highlighted
+set cursorcolumn                         " Set the column of the cursor to be highlighted
 
 "" Text Settings
-set enc=utf-8 " UTF-8 encoding
-set linebreak " Line breaks on whitespaces
+set enc=utf-8   " UTF-8 encoding
+set linebreak   " Line breaks on whitespaces
 set scrolloff=5 " 5 Lines above/below the cursor while scrolling
 
-"" Tabulation Settings
-set tabstop=4 " Tabulations are in the proper place
-set shiftwidth=4 " Tabulation size if 4
-set expandtab " Tabulations are expanded
-set smartindent " Smart indentation
-set autoindent " New line indentation based on the previous line
-set pastetoggle=<F2> " Set the paste toggle to be (<F2>)
+"" Indentation Settings
+set tabstop=4        " Tabulations are in the proper place
+set shiftwidth=4     " Tabulation size if 4
+set expandtab        " Tabulations are expanded
+set autoindent       " Smart indentation
+set autoindent       " New line indentation based on the previous line
+set pastetoggle=<F2> " Set the paste toggle (<F2>)
 
 "" Search Settings
 set hlsearch " Highlight words found using the search
 
 "" Clipboard settings
+" Set win32yank.exe as clipboard
+let g:clipboard = {
+    \'name': 'win32yank',
+    \'copy': {
+        \'+': 'win32yank.exe -i',
+        \'*': 'win32yank.exe -i'
+    \},
+    \'paste': {
+        \'+': 'win32yank.exe -o',
+        \'*': 'win32yank.exe -o'
+    \},
+    \'cache_enabled': 0
+\}
 set clipboard=unnamedplus " Use "+ register for clipboard
 
+"" Skeleton Settings
+augroup skeletons
+    autocmd!
+    autocmd BufNewFile pom.xml 0r skeletons/pom.xml
+augroup END
 
 
 
@@ -220,7 +279,7 @@ set clipboard=unnamedplus " Use "+ register for clipboard
 "    sudo apt install r-base
 " julia: sudo apt install julia
 " nim: sudo apt-get install nim
-" c: (preinstalled)
+" c: sudo apt install tcc
 " cpp: (preinstalled)
 " cs: sudo apt install gnupg ca-certificates
 "     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
@@ -266,62 +325,61 @@ set clipboard=unnamedplus " Use "+ register for clipboard
 "         sudo apt-get install esl-erlang
 " st: (preinstalled)
 " nasm: sudo apt install nasm
+" html: sudo apt install firefox
 
 " Call the function CompileAndRun (<F9>)
 map <F9> :call <SID>CompileAndRun()<CR>
 imap <F9> <ESC>:call <SID>CompileAndRun()<CR>
 "" Runs the code in the file using the filetype
 function! s:CompileAndRun()
-    let l:file = expand('%:p') " The absolute path to the file
+    let l:file = expand('%:p')    " The absolute path to the file
     let l:noext = expand('%:p:r') " The path to the file without the extension
-    let l:path = expand('%:p:h') " The absolute path to the file without the name
-    let l:name = expand('%:t:r') " The file name without the extension
-    
+    let l:path = expand('%:p:h')  " The absolute path to the file without the name
+    let l:name = expand('%:t:r')  " The file name without the extension
     " The possible commands
     let l:command_map = {
-        \'haxe'      : 'haxe --main ' . l:file . ' --interp',
-        \'dart'      : 'dart run ' . l:file,
-        \'java'      : 'java ' . l:file,
-        \'kotlin'    : 'kscript ' . l:file,
-        \'scala'     : 'scala ' . l:file,
-        \'groovy'    : 'groovy -classpath ' . l:path . ' ' . l:name,
-        \'clojure'   : 'clojure ' . l:file,
-        \'lisp'      : 'clisp ' . l:file,
-        \'hy'        : 'hy ' . l:file,
-        \'python'    : 'python3 ' . l:file,
-        \'r'         : 'r ' . l:file,
-        \'julia'     : 'julia ' . l:file,
-        \'nim'       : 'nimrun ' . l:path,
-        \'c'         : 'gcc ' . l:file . ' -o ' . l:noext . ' && ' . l:noext . ' && rm ' . l:noext,
+        \'haxe'      : 'haxe --run ' . l:file,
+        \'dart'      : 'dart run '   . l:file,
+        \'java'      : 'java '       . l:file,
+        \'kotlin'    : 'kscript '    . l:file,
+        \'scala'     : 'scala '      . l:file,
+        \'groovy'    : 'groovy '     . l:file,
+        \'clojure'   : 'clojure '    . l:file,
+        \'lisp'      : 'clisp '      . l:file,
+        \'hy'        : 'hy '         . l:file,
+        \'python'    : 'python3 '    . l:file,
+        \'r'         : 'r '          . l:file,
+        \'julia'     : 'julia '      . l:file,
+        \'nim'       : 'nimrun '     . l:path,
+        \'c'         : 'tcc -run '   . l:file,
         \'cpp'       : 'g++ ' . l:file . ' -o ' . l:noext . ' && ' . l:noext . ' && rm ' . l:noext,
         \'cs'        : 'mcs ' . l:file . ' && mono ' . l:noext . '.exe && rm ' . l:noext . '.exe',
-        \'d'         : 'rdmd ' . l:file,
+        \'d'         : 'rdmd '         . l:file,
         \'rust'      : 'cargo script ' . l:file,
-        \'go'        : 'go run ' . l:file,
+        \'go'        : 'go run '       . l:file,
         \'fortran'   : 'gfortran ' . l:file . ' -o ' . l:name . ' && ' . l:noext . ' && rm ' . l:noext,
         \'pascal'    : 'instantfpc ' . l:file,
-        \'haskell'   : 'runghc ' . l:file,
-        \'ocaml'     : 'ocaml ' . l:file,
-        \'lua'       : 'lua ' . l:file,
+        \'haskell'   : 'runghc '     . l:file,
+        \'ocaml'     : 'ocaml '      . l:file,
+        \'lua'       : 'lua '        . l:file,
         \'dosbatch'  : 'cmd.exe /c //wsl$/Ubuntu' . l:file,
         \'powershell': 'powershell.exe ' . l:file,
         \'sh'        : 'chmod +x ' . l:file . ' && ' . l:file,
-        \'perl'      : 'perl ' . l:file,
-        \'php'       : 'php ' . l:file,
-        \'javascript': 'node ' . l:file,
+        \'perl'      : 'perl '    . l:file,
+        \'php'       : 'php '     . l:file,
+        \'javascript': 'node '    . l:file,
         \'typescript': 'ts-node ' . l:file,
-        \'coffee'    : 'coffee ' . l:file,
-        \'ruby'      : 'ruby ' . l:file,
+        \'coffee'    : 'coffee '  . l:file,
+        \'ruby'      : 'ruby '    . l:file,
         \'crystal'   : 'crystal ' . l:file,
-        \'elixir'    : 'elixir ' . l:file,
+        \'elixir'    : 'elixir '  . l:file,
         \'erlang'    : 'escript ' . l:file,
-        \'st'        : 'gst ' . l:file,
-        \'nasm'       : 'nasm -felf64 ' . l:file . ' -o ' . l:noext . '.o && ld ' . l:noext . '.o -o ' . l:noext . ' && ' . l:noext . ' && rm ' . l:noext . '.o ' . l:noext
+        \'st'        : 'gst '     . l:file,
+        \'nasm'      : 'nasm -felf64 ' . l:file . ' -o ' . l:noext . '.o && ld ' . l:noext . '.o -o ' . l:noext . ' && ' . l:noext . ' && rm ' . l:noext . '.o ' . l:noext,
+        \'html'      : 'firefox ' . l:file
     \}
-    
     " Get the command
     let l:command = get(l:command_map, &filetype, '')
-    
     " If can't execute the file, show an error
     if l:command == ''
         echohl ErrorMsg " Highligh echoes red
@@ -343,7 +401,7 @@ function! s:CompileAndRun()
 endfunction
 
 " Commands:
-" haxe: (preinstalled with NPM)
+" haxe: npm install haxe-repl
 " dart: (none)
 " java: (installed)
 " kotlin: (installed)
@@ -394,6 +452,7 @@ endfunction
 "       cd rappel
 "       CC=clang make (requires Clang)
 "       sudo mv bin/rappel /usr/bin
+" html: (none)
 
 "augroup test
 "    autocmd!
@@ -452,12 +511,11 @@ function! s:StartREPL()
         \'elixir'    : 'iex',
         \'erlang'    : 'erl',
         \'st'        : 'gst',
-        \'nasm'      : 'rappel'
+        \'nasm'      : 'rappel',
+        \'html'      : ''
     \}
-    
     " Get the command
     let l:command = get(l:command_map, &filetype, '')
-    
     " If a REPL can be started, start it
     if l:command != ''
         let l:code_nr = bufnr('%') " Get the number of the code buffer
