@@ -17,8 +17,9 @@ Plug 'rakr/vim-one'                                              " Color scheme
 Plug 'vim-airline/vim-airline'                                   " Custom status bar
 Plug 'ntpeters/vim-airline-colornum'                             " Colors the row number the same as the status bar
 
+Plug 'kingDaniel2004/NVim_Java_Highlighting'                     " Java advanced highlighting
 Plug 'octol/vim-cpp-enhanced-highlight'                          " C++ highlighting
-Plug 'NLKNguyen/vim-maven-syntax'
+Plug 'NLKNguyen/vim-maven-syntax'                                " pom.xml advanced highlighting
 Plug 'mattn/emmet-vim'                                           " HTML advanced support
 Plug 'vim-crystal/vim-crystal'                                   " Crystal support
 Plug 'neovimhaskell/haskell-vim'                                 " Haskell highlighting
@@ -132,8 +133,6 @@ nmap ]b <Plug>AirlineSelectNextTab
 let g:cpp_class_scope_highlight = 1     " Highlight class scope
 let g:cpp_member_variable_highlight = 1 " Highlight member variables
 let g:cpp_class_decl_highlight = 1      " Highlight class declarations
-
-"" vim-maven-syntax
 
 "" vim-clojure-static
 " Highlight different words
@@ -352,12 +351,12 @@ function! s:CompileAndRun()
         \'julia'     : 'julia '      . l:file,
         \'nim'       : 'nimrun '     . l:path,
         \'c'         : 'tcc -run '   . l:file,
-        \'cpp'       : 'g++ ' . l:file . ' -o ' . l:noext . ' && ' . l:noext . ' && rm ' . l:noext,
-        \'cs'        : 'mcs ' . l:file . ' && mono ' . l:noext . '.exe && rm ' . l:noext . '.exe',
+        \'cpp'       : 'g++ ' . l:file . ' -o ' . l:noext . ' && ' . l:noext . ' ; rm ' . l:noext,
+        \'cs'        : 'mcs ' . l:file . ' && mono ' . l:noext . '.exe ; rm ' . l:noext . '.exe',
         \'d'         : 'rdmd '         . l:file,
         \'rust'      : 'cargo script ' . l:file,
         \'go'        : 'go run '       . l:file,
-        \'fortran'   : 'gfortran ' . l:file . ' -o ' . l:name . ' && ' . l:noext . ' && rm ' . l:noext,
+        \'fortran'   : 'gfortran ' . l:file . ' -o ' . l:name . ' && ' . l:noext . ' ; rm ' . l:noext,
         \'pascal'    : 'instantfpc ' . l:file,
         \'haskell'   : 'runghc '     . l:file,
         \'ocaml'     : 'ocaml '      . l:file,
@@ -375,7 +374,7 @@ function! s:CompileAndRun()
         \'elixir'    : 'elixir '  . l:file,
         \'erlang'    : 'escript ' . l:file,
         \'st'        : 'gst '     . l:file,
-        \'nasm'      : 'nasm -felf64 ' . l:file . ' -o ' . l:noext . '.o && ld ' . l:noext . '.o -o ' . l:noext . ' && ' . l:noext . ' && rm ' . l:noext . '.o ' . l:noext,
+        \'nasm'      : 'nasm -felf64 ' . l:file . ' -o ' . l:noext . '.o && ld ' . l:noext . '.o -o ' . l:noext . ' && ' . l:noext . ' ; rm ' . l:noext . '.o ' . l:noext,
         \'html'      : 'firefox ' . l:file
     \}
     " Get the command
