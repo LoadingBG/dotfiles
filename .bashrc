@@ -146,8 +146,16 @@ declare -x PATH="/home/loadingbg/repls/cling_2020-11-05_ROOT-ubuntu2004/bin:/hom
 # Change the default directory to ~
 cd
 
-# Start Tomcat (https://www.programmersought.com/article/53024817699/)
-sudo /usr/local/tomcat/bin/startup.sh
+# Add Tomcat commands
+tcstart() {
+    sudo /usr/local/tomcat/bin/startup.sh
+}
+export -f tcstart
+
+tcstop() {
+    sudo /usr/local/tomcat/bin/shutdown.sh
+}
+export -f tcstop
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/loadingbg/.sdkman"
