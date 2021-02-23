@@ -141,7 +141,9 @@ export -f rmfld
 
 export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
 
-declare -x PATH="/home/loadingbg/repls/cling_2020-11-05_ROOT-ubuntu2004/bin:/home/loadingbg/.local/bin:/home/loadingbg/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/"
+export PATH="/home/loadingbg/repls/cling_2020-11-05_ROOT-ubuntu2004/bin:/home/loadingbg/.local/bin:/home/loadingbg/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/"
+
+export CATALINA_HOME="/usr/local/tomcat"
 
 # Change the default directory to ~
 cd
