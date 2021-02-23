@@ -141,10 +141,13 @@ export -f rmfld
 
 export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
 
-declare -x PATH="/home/loadingbg/repls/cling_2020-11-05_ROOT-ubuntu2004/bin:/home/loadingbg/.local/bin:/home/loadingbg/.cargo/bin:/home/loadingbg/.sdkman/candidates/kotlin/current/bin:/home/loadingbg/.sdkman/candidates/groovy/current/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/"
+declare -x PATH="/home/loadingbg/repls/cling_2020-11-05_ROOT-ubuntu2004/bin:/home/loadingbg/.local/bin:/home/loadingbg/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/"
 
 # Change the default directory to ~
 cd
+
+# Start Tomcat (https://www.programmersought.com/article/53024817699/)
+sudo /usr/local/tomcat/bin/startup.sh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/loadingbg/.sdkman"
