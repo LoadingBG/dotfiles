@@ -3,6 +3,10 @@
 """ Vim-plug plug-ins
 call plug#begin('~/.vim/bundle') " Initialize Vim-plug
 
+"Plug '~/vimcord'
+"let g:vimcord_python_executable = '/mnt/c/Users/troya/AppData/Local/Programs/Python/Python38-32/python.exe'
+"let g:vimcord_filepath = '/home/loadingbg'
+
 " Vim-plug plug-ins below
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }                " Plugin manager and LSP
 " coc extensions: coc-marketplace, coc-pairs, coc-snippets, coc-vimlsp,
@@ -71,6 +75,7 @@ let g:indent_guides_guide_size = 1            " The guide size is 1
 
 "" rainbow
 autocmd VimEnter,BufNewFile *.clj  RainbowToggleOn " Toggle the parentheses on Clojure files
+autocmd VimEnter,BufNewFile *.cljc RainbowToggleOn " Toggle the parentheses on Clojure files
 autocmd VimEnter,BufNewFile *.lisp RainbowToggleOn " Toggle the parentheses on Lisp files
 autocmd VimEnter,BufNewFile *.hy   RainbowToggleOn " Toggle the parentheses on Hy files
 autocmd VimEnter,BufNewFile *.java RainbowToggleOn " Toggle the parentheses on Java files
@@ -138,11 +143,14 @@ let g:cpp_class_decl_highlight = 1      " Highlight class declarations
 " Highlight different words
 let g:clojure_syntax_keywords = {
     \'clojureDefine': ['defproject'],
-    \'clojureFunc':   ['a/>!', 'a/>!!', 'a/<!', 'a/<!!', 'a/alts!', 'a/alts!!', 'a/chan', 'a/promise-chan', 'a/timeout',
-                      \'a/take!', 'a/put!', 'a/close!', 'a/pipe', 'inst-ms'],
-    \'clojureMacro':  ['a/go', 'a/go-loop', 'a/alt!', 'a/alt!!', 'a/thread']
+    \'clojureFunc':   ['any?', 'inst-ms',
+                      \'a/>!', 'a/>!!', 'a/<!', 'a/<!!', 'a/alts!', 'a/alts!!', 'a/chan', 'a/promise-chan',
+                        \'a/timeout', 'a/take!', 'a/put!', 'a/close!', 'a/pipe',
+                      \'s/conform', 's/valid?', 's/cat'],
+    \'clojureMacro':  ['a/go', 'a/go-loop', 'a/alt!', 'a/alt!!', 'a/thread',
+                      \'s/fdef', 's/def', 's/*']
 \}
-let g:clojure_fuzzy_indent_patterns = ['^a/go-loop'] " Indent these words like 'loop'
+let g:clojure_fuzzy_indent_patterns = ['^a/go-loop', '^s/fdef'] " Indent these words like 'loop'
 
 "" vim-crystal
 " Highlight variables and methods as identifiers
@@ -325,6 +333,9 @@ augroup END
 " st: (preinstalled)
 " nasm: sudo apt install nasm
 " html: sudo apt install firefox
+" jsp: wget https://mirrors.netix.net/apache/tomcat/tomcat-10/v10.0.2/bin/apache-tomcat-10.0.2.tar.gz
+"      tar -zxvf apache-tomcat-10.0.2.tar.gz
+"      sudo mv apache-tomcat-10.0.2 /usr/local/tomcat
 
 " Call the function CompileAndRun (<F9>)
 map <F9> :call <SID>CompileAndRun()<CR>
@@ -375,7 +386,8 @@ function! s:CompileAndRun()
         \'erlang'    : 'escript ' . l:file,
         \'st'        : 'gst '     . l:file,
         \'nasm'      : 'nasm -felf64 ' . l:file . ' -o ' . l:noext . '.o && ld ' . l:noext . '.o -o ' . l:noext . ' && ' . l:noext . ' ; rm ' . l:noext . '.o ' . l:noext,
-        \'html'      : 'firefox ' . l:file
+        \'html'      : 'firefox ' . l:file,
+        \'jsp'       : ''
     \}
     " Get the command
     let l:command = get(l:command_map, &filetype, '')
@@ -452,6 +464,7 @@ endfunction
 "       CC=clang make (requires Clang)
 "       sudo mv bin/rappel /usr/bin
 " html: (none)
+" jsp: (none)
 
 "augroup test
 "    autocmd!
@@ -511,7 +524,8 @@ function! s:StartREPL()
         \'erlang'    : 'erl',
         \'st'        : 'gst',
         \'nasm'      : 'rappel',
-        \'html'      : ''
+        \'html'      : '',
+        \'jsp'       : ''
     \}
     " Get the command
     let l:command = get(l:command_map, &filetype, '')
