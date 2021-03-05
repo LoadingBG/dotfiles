@@ -74,11 +74,15 @@ endif
 let g:indent_guides_guide_size = 1            " The guide size is 1
 
 "" rainbow
-autocmd VimEnter,BufNewFile *.clj  RainbowToggleOn " Toggle the parentheses on Clojure files
-autocmd VimEnter,BufNewFile *.cljc RainbowToggleOn " Toggle the parentheses on Clojure files
-autocmd VimEnter,BufNewFile *.lisp RainbowToggleOn " Toggle the parentheses on Lisp files
-autocmd VimEnter,BufNewFile *.hy   RainbowToggleOn " Toggle the parentheses on Hy files
-autocmd VimEnter,BufNewFile *.java RainbowToggleOn " Toggle the parentheses on Java files
+augroup rainbow_parens
+    autocmd!
+    autocmd VimEnter,BufNewFile *.clj  RainbowToggleOn " Toggle the parentheses on Clojure files
+    autocmd VimEnter,BufNewFile *.cljc RainbowToggleOn " Toggle the parentheses on Clojure files
+    autocmd VimEnter,BufNewFile *.edn  RainbowToggleOn " Toggle the parentheses on EDN files
+    autocmd VimEnter,BufNewFile *.lisp RainbowToggleOn " Toggle the parentheses on Lisp files
+    autocmd VimEnter,BufNewFile *.hy   RainbowToggleOn " Toggle the parentheses on Hy files
+    autocmd VimEnter,BufNewFile *.java RainbowToggleOn " Toggle the parentheses on Java files
+augroup END
 " Configuration:
 " Java -> Color '{' and '}'
 " Lisps -> Color '(', ')', '[', ']', '{', '}' and ','
