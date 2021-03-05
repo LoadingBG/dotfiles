@@ -1,0 +1,5 @@
+{:linters       {:missing-docstring            {:level :info}
+                 :unsorted-required-namespaces {:level :info}
+                 :single-key-in                {:level :warning}
+                 :shadowed-var                 {:level :warning}}
+ :skip-comments true}
