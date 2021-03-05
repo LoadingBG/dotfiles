@@ -206,7 +206,7 @@ imap <C-BS> <C-W>
 set statusline+=%#warningmsg#                          " Add warning messages to status line
 set statusline+=%*                                     " Add miscelaneous? messages to status line
 autocmd FocusLost * silent! wall                       " Save all buffers when focus is lost
-autocmd shiftwidth_settings
+augroup shiftwidth_settings
     autocmd!
     autocmd VimEnter,BufNewFile *.xml set shiftwidth=2 " Set the indentation to two spaces for XML files
     autocmd VimEnter,BufNewFile *.xml set tabstop=2    " Set the tabulation stop to two spaces for XML files
