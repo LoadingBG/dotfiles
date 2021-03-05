@@ -196,49 +196,50 @@ highlight! link coffeeSpaceError NONE
 """ Neovim settings
 
 "" Editor Settings
-filetype plugin indent on                          " Automatically detect file types
-set autoread                                       " Automatically re-read files modified outside of Vim
-set backspace=indent,eol,start                     " Allow backspacing over indentation, line breaks and insertion starts
-set mouse=a                                        " Cursor goes wherever clicked with mouse
-set updatetime=300                                 " Save swap file to disk after 300ms of idling
+filetype plugin indent on                              " Automatically detect file types
+set autoread                                           " Automatically re-read files modified outside of Vim
+set backspace=indent,eol,start                         " Allow backspacing over indentation, line breaks and insertion starts
+set mouse=a                                            " Cursor goes wherever clicked with mouse
+set updatetime=300                                     " Save swap file to disk after 300ms of idling
 " Remove the previous word (<Ctrl-Backspace>)
 imap <C-BS> <C-W>
-set statusline+=%#warningmsg#                      " Add warning messages to status line
-set statusline+=%*                                 " Add miscelaneous? messages to status line
-autocmd FocusLost * silent! wall                   " Save all buffers when focus is lost
-autocmd VimEnter,BufNewFile *.xml set shiftwidth=2 " Set the indentation to two spaces for XML files
-autocmd VimEnter,BufNewFile *.xml set tabstop=2    " Set the tabulation stop to two spaces for XML files
-autocmd VimEnter,BufNewFile *.hs set shiftwidth=2  " Set the indentation to two spaces for Haskell files
-autocmd VimEnter,BufNewFile *.rb set shiftwidth=4  " Set the indentation to four spaces for Ruby files
-let g:asmsyntax = 'nasm'                           " Set the syntax for Assembly files to NASM
-let g:python_host_prog = '/usr/bin/python2'        " Set the executable for Python 2 host to be '/usr/bin/python2'
-let g:python3_host_prog = '/usr/bin/python3'       " Set the executable for Python 3 host to be '/usr/bin/python3'
+set statusline+=%#warningmsg#                          " Add warning messages to status line
+set statusline+=%*                                     " Add miscelaneous? messages to status line
+autocmd FocusLost * silent! wall                       " Save all buffers when focus is lost
+autocmd shiftwidth_settings
+    autocmd!
+    autocmd VimEnter,BufNewFile *.xml set shiftwidth=2 " Set the indentation to two spaces for XML files
+    autocmd VimEnter,BufNewFile *.xml set tabstop=2    " Set the tabulation stop to two spaces for XML files
+    autocmd VimEnter,BufNewFile *.hs  set shiftwidth=2 " Set the indentation to two spaces for Haskell files
+augroup END
+let g:asmsyntax = 'nasm'                               " Set the syntax for Assembly files to NASM
+let g:python_host_prog = '/usr/bin/python2'            " Set the executable for Python 2 host to be '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'           " Set the executable for Python 3 host to be '/usr/bin/python3'
 
 "" UI Settings
-syntax on                                " Syntax highlighting
-set number relativenumber                " Line numbers
-set ruler                                " Show position of cursor
-set title                                " Show name of file and the path to it
-set background=dark                      " Use colors suitable for dark background
-set termguicolors                        " Enable all colors
-set cursorline                           " Set the line of the cursor to be highlighted
-set cursorcolumn                         " Set the column of the cursor to be highlighted
+syntax on                                              " Syntax highlighting
+set number relativenumber                              " Line numbers
+set ruler                                              " Show position of cursor
+set title                                              " Show name of file and the path to it
+set background=dark                                    " Use colors suitable for dark background
+set termguicolors                                      " Enable all colors
+set cursorline                                         " Set the line of the cursor to be highlighted
 
 "" Text Settings
-set enc=utf-8   " UTF-8 encoding
-set linebreak   " Line breaks on whitespaces
-set scrolloff=5 " 5 Lines above/below the cursor while scrolling
+set enc=utf-8                                          " UTF-8 encoding
+set linebreak                                          " Line breaks on whitespaces
+set scrolloff=5                                        " 5 Lines above/below the cursor while scrolling
 
 "" Indentation Settings
-set tabstop=4        " Tabulations are in the proper place
-set shiftwidth=4     " Tabulation size if 4
-set expandtab        " Tabulations are expanded
-set autoindent       " Smart indentation
-set autoindent       " New line indentation based on the previous line
-set pastetoggle=<F2> " Set the paste toggle (<F2>)
+set tabstop=4                                          " Tabulations are in the proper place
+set shiftwidth=4                                       " Tabulation size if 4
+set expandtab                                          " Tabulations are expanded
+set autoindent                                         " Smart indentation
+set autoindent                                         " New line indentation based on the previous line
+set pastetoggle=<F2>                                   " Set the paste toggle (<F2>)
 
 "" Search Settings
-set hlsearch " Highlight words found using the search
+set hlsearch                                           " Highlight words found using the search
 
 "" Clipboard settings
 " Set win32yank.exe as clipboard
@@ -267,79 +268,76 @@ augroup END
 """ Custom functions
 
 " Commands:
-" haxe: sudo add-apt-repository ppa:haxe/releases -y
-"       sudo apt-get update
-"       sudo apt-get install haxe -y
-" dart: sudo apt-get update
-"       sudo apt-get install apt-transport-https
-"       sudo sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
-"       sudo sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
-"       sudo apt-get update
-"       sudo apt-get install dart
-" java: sudo apt install openjdk-11-jdk-headless
-" kotlin: sdk install kotlin
-" scala: sudo apt install scala
-" groovy: sdk install groovy
-" clojure: sudo apt install clojure
-" lisp: sudo apt install clisp
-" hy: pip install hy
-" python: (preinstalled)
-" r: sudo apt install dirmngr gnupg apt-transport-https ca-certificates software-properties-common
-"    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-"    sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
-"    sudo apt install r-base
-" julia: sudo apt install julia
-" nim: sudo apt-get install nim
-" c: sudo apt install tcc
-" cpp: (preinstalled)
-" cs: sudo apt install gnupg ca-certificates
-"     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-"     echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
-"     sudo apt update
-"     sudo apt install mono-devel
-" d: sudo wget https://netcologne.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list
-"    sudo apt-get update --allow-insecure-repositories
-"    sudo apt-get -y --allow-unauthenticated install --reinstall d-apt-keyring
-"    sudo apt-get update && sudo apt-get install dmd-compiler dub
-" rust: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-"       sudo cargo install cargo-script
-" go: sudo add-apt-repository ppa:longsleep/golang-backports
-"     sudo apt update
-"     sudo add-apt-repository ppa:longsleep/golang-backports
-" fortran: (preinstalled)
-" pascal: (preinstalled)
-" haskell: sudo add-apt-repository -y ppa:hvr/ghc
-"          sudo apt-get update
-"          sudo apt-get install -y cabal-install-XXX ghc-YYY
-" ocaml: sudo apt install ocaml
-" lua: sudo apt install lua5.3
-" dosbatch: (preinstalled for WSL)
+" haxe:       sudo add-apt-repository ppa:haxe/releases -y
+"             sudo apt-get update
+"             sudo apt-get install haxe -y
+" dart:       sudo apt-get update
+"             sudo apt-get install apt-transport-https
+"             sudo sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
+"             sudo sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
+"             sudo apt-get update
+"             sudo apt-get install dart
+" java:       sudo apt install openjdk-11-jdk-headless
+" kotlin:     sdk install kotlin
+" scala:      sudo apt install scala
+" groovy:     sdk install groovy
+" clojure:    sudo apt install clojure
+" lisp:       sudo apt install clisp
+" hy:         pip install hy
+" python:     (preinstalled)
+" r:          sudo apt install dirmngr gnupg apt-transport-https ca-certificates software-properties-common
+"             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+"             sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+"             sudo apt install r-base
+" julia:      sudo apt install julia
+" nim:        sudo apt-get install nim
+" c:          sudo apt install tcc
+" cpp:        (preinstalled)
+" cs:         sudo apt install gnupg ca-certificates
+"             sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+"             echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+"             sudo apt update
+"             sudo apt install mono-devel
+" d:          sudo wget https://netcologne.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list
+"             sudo apt-get update --allow-insecure-repositories
+"             sudo apt-get -y --allow-unauthenticated install --reinstall d-apt-keyring
+"             sudo apt-get update && sudo apt-get install dmd-compiler dub
+" rust:       curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+"             sudo cargo install cargo-script
+" go:         sudo add-apt-repository ppa:longsleep/golang-backports
+"             sudo apt update
+"             sudo add-apt-repository ppa:longsleep/golang-backports
+" fortran:    (preinstalled)
+" pascal:     (preinstalled)
+" haskell:    sudo add-apt-repository -y ppa:hvr/ghc
+"             sudo apt-get update
+"             sudo apt-get install -y cabal-install-XXX ghc-YYY
+" ocaml:      sudo apt install ocaml
+" lua:        sudo apt install lua5.3
+" dosbatch:   (preinstalled for WSL)
 " powershell: (preinstalled for WSL)
-" sh: (preinstalled)
-" perl: (preinstalled)
-" php: sudo apt update
-"      sudo apt install php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath
+" sh:         (preinstalled)
+" perl:       (preinstalled)
+" php:        sudo apt update
+"             sudo apt install php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath
 " javascript: sudo apt install nodejs
 "             sudo apt install npm
 " typescript: sudo npm install typescript
 "             sudo npm install ts-node
-" coffee: sudo apt install coffeescript
-" ruby: sudo apt-get install ruby-full
-" crystal: curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
-"          curl -sL "https://keybase.io/crystal/pgp_keys.asc" | sudo apt-key add -
-"          echo "deb https://dist.crystal-lang.org/apt crystal main" | sudo tee /etc/apt/sources.list.d/crystal.list
-"          sudo apt-get update
-"          sudo apt install crystal libssl-dev libxml2-dev libyaml-dev libgmp-dev libz-dev
-" elixir: sudo apt-get install elixir (requires Erlang)
-" erlang: wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb
-"         sudo apt-get update
-"         sudo apt-get install esl-erlang
-" st: (preinstalled)
-" nasm: sudo apt install nasm
-" html: sudo apt install firefox
-" jsp: wget https://mirrors.netix.net/apache/tomcat/tomcat-10/v10.0.2/bin/apache-tomcat-10.0.2.tar.gz
-"      tar -zxvf apache-tomcat-10.0.2.tar.gz
-"      sudo mv apache-tomcat-10.0.2 /usr/local/tomcat
+" coffee:     sudo apt install coffeescript
+" ruby:       sudo apt-get install ruby-full
+" crystal:    curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
+"             curl -sL "https://keybase.io/crystal/pgp_keys.asc" | sudo apt-key add -
+"             echo "deb https://dist.crystal-lang.org/apt crystal main" | sudo tee /etc/apt/sources.list.d/crystal.list
+"             sudo apt-get update
+"             sudo apt install crystal libssl-dev libxml2-dev libyaml-dev libgmp-dev libz-dev
+" elixir:     sudo apt-get install elixir (requires Erlang)
+" erlang:     wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb
+"             sudo apt-get update
+"             sudo apt-get install esl-erlang
+" st:         (preinstalled)
+" nasm:       sudo apt install nasm
+" html:       sudo apt install firefox
 
 " Call the function CompileAndRun (<F9>)
 map <F9> :call <SID>CompileAndRun()<CR>
@@ -352,46 +350,45 @@ function! s:CompileAndRun()
     let l:name = expand('%:t:r')  " The file name without the extension
     " The possible commands
     let l:command_map = {
-        \'haxe'      : 'haxe --run ' . l:file,
-        \'dart'      : 'dart run '   . l:file,
-        \'java'      : 'java '       . l:file,
-        \'kotlin'    : 'kscript '    . l:file,
-        \'scala'     : 'scala '      . l:file,
-        \'groovy'    : 'groovy '     . l:file,
-        \'clojure'   : 'clojure '    . l:file,
-        \'lisp'      : 'clisp '      . l:file,
-        \'hy'        : 'hy '         . l:file,
-        \'python'    : 'python3 '    . l:file,
-        \'r'         : 'r '          . l:file,
-        \'julia'     : 'julia '      . l:file,
-        \'nim'       : 'nimrun '     . l:path,
-        \'c'         : 'tcc -run '   . l:file,
-        \'cpp'       : 'g++ ' . l:file . ' -o ' . l:noext . ' && ' . l:noext . ' ; rm ' . l:noext,
-        \'cs'        : 'mcs ' . l:file . ' && mono ' . l:noext . '.exe ; rm ' . l:noext . '.exe',
-        \'d'         : 'rdmd '         . l:file,
-        \'rust'      : 'cargo script ' . l:file,
-        \'go'        : 'go run '       . l:file,
-        \'fortran'   : 'gfortran ' . l:file . ' -o ' . l:name . ' && ' . l:noext . ' ; rm ' . l:noext,
-        \'pascal'    : 'instantfpc ' . l:file,
-        \'haskell'   : 'runghc '     . l:file,
-        \'ocaml'     : 'ocaml '      . l:file,
-        \'lua'       : 'lua '        . l:file,
+        \'haxe'      : 'haxe --run '              . l:file,
+        \'dart'      : 'dart run '                . l:file,
+        \'java'      : 'java '                    . l:file,
+        \'kotlin'    : 'kscript '                 . l:file,
+        \'scala'     : 'scala '                   . l:file,
+        \'groovy'    : 'groovy '                  . l:file,
+        \'clojure'   : 'clojure '                 . l:file,
+        \'lisp'      : 'clisp '                   . l:file,
+        \'hy'        : 'hy '                      . l:file,
+        \'python'    : 'python3 '                 . l:file,
+        \'r'         : 'r '                       . l:file,
+        \'julia'     : 'julia '                   . l:file,
+        \'nim'       : 'nimrun '                  . l:path,
+        \'c'         : 'tcc -run '                . l:file,
+        \'cpp'       : 'g++ '                     . l:file . ' -o ' . l:noext . ' && ' . l:noext . ' ; rm ' . l:noext,
+        \'cs'        : 'mcs '                     . l:file . ' && mono ' . l:noext . '.exe ; rm ' . l:noext . '.exe',
+        \'d'         : 'rdmd '                    . l:file,
+        \'rust'      : 'cargo script '            . l:file,
+        \'go'        : 'go run '                  . l:file,
+        \'fortran'   : 'gfortran '                . l:file . ' -o ' . l:name . ' && ' . l:noext . ' ; rm ' . l:noext,
+        \'pascal'    : 'instantfpc '              . l:file,
+        \'haskell'   : 'runghc '                  . l:file,
+        \'ocaml'     : 'ocaml '                   . l:file,
+        \'lua'       : 'lua '                     . l:file,
         \'dosbatch'  : 'cmd.exe /c //wsl$/Ubuntu' . l:file,
-        \'powershell': 'powershell.exe ' . l:file,
-        \'sh'        : 'chmod +x ' . l:file . ' && ' . l:file,
-        \'perl'      : 'perl '    . l:file,
-        \'php'       : 'php '     . l:file,
-        \'javascript': 'node '    . l:file,
-        \'typescript': 'ts-node ' . l:file,
-        \'coffee'    : 'coffee '  . l:file,
-        \'ruby'      : 'ruby '    . l:file,
-        \'crystal'   : 'crystal ' . l:file,
-        \'elixir'    : 'elixir '  . l:file,
-        \'erlang'    : 'escript ' . l:file,
-        \'st'        : 'gst '     . l:file,
-        \'nasm'      : 'nasm -felf64 ' . l:file . ' -o ' . l:noext . '.o && ld ' . l:noext . '.o -o ' . l:noext . ' && ' . l:noext . ' ; rm ' . l:noext . '.o ' . l:noext,
-        \'html'      : 'firefox ' . l:file,
-        \'jsp'       : ''
+        \'powershell': 'powershell.exe '          . l:file,
+        \'sh'        : 'chmod +x '                . l:file . ' && ' . l:file,
+        \'perl'      : 'perl '                    . l:file,
+        \'php'       : 'php '                     . l:file,
+        \'javascript': 'node '                    . l:file,
+        \'typescript': 'ts-node '                 . l:file,
+        \'coffee'    : 'coffee '                  . l:file,
+        \'ruby'      : 'ruby '                    . l:file,
+        \'crystal'   : 'crystal '                 . l:file,
+        \'elixir'    : 'elixir '                  . l:file,
+        \'erlang'    : 'escript '                 . l:file,
+        \'st'        : 'gst '                     . l:file,
+        \'nasm'      : 'nasm -felf64 '            . l:file . ' -o ' . l:noext . '.o && ld ' . l:noext . '.o -o ' . l:noext . ' && ' . l:noext . ' ; rm ' . l:noext . '.o ' . l:noext,
+        \'html'      : 'firefox '                 . l:file
     \}
     " Get the command
     let l:command = get(l:command_map, &filetype, '')
@@ -416,69 +413,58 @@ function! s:CompileAndRun()
 endfunction
 
 " Commands:
-" haxe: npm install haxe-repl
-" dart: (none)
-" java: (installed)
-" kotlin: (installed)
-" scala: (installed)
-" groovy: (insatlled)
-" clojure: sudo apt install leiningen
-" lisp: (installed)
-" hy: (installed)
-" python: (preinstalled)
-" r: (installed)
-" julia: (installed)
-" nim: (installed)
-" c: (none)
-" cpp: wget https://root.cern.ch/download/cling//cling_2020-11-05_ROOT-ubuntu2004.tar.bz2
-"      tar -xf cling_2020-11-05_ROOT-ubuntu2004.tar.bz2
-"      export PATH=$PATH:(/path/to/cling_2020-11-05_ROOT-ubuntu2004)/bin
-" cs: (installed)
-" d: sudo apt-get update -y
-"    sudo apt-get install -y dub
-" rust: rustup toolchain add nightly
-"       cargo +nightly install papyrus
-" go: go install -i https://github.com/sbinet/igo
-"     sudo mv (/path/to/$GOROOT)/bin/igo /usr/bin
-" fortran: gem install frepl (requires Ruby)
-" pascal: (none)
-" haskell: (installed)
-" ocaml: (installed)
-" lua: (insatlled)
-" dosbatch: (installed for WSL)
+" haxe:       npm install haxe-repl
+" dart:       (none)
+" java:       (installed)
+" kotlin:     (installed)
+" scala:      (installed)
+" groovy:     (insatlled)
+" clojure:    sudo apt install leiningen
+" lisp:       (installed)
+" hy:         (installed)
+" python:     (preinstalled)
+" r:          (installed)
+" julia:      (installed)
+" nim:        (installed)
+" c:          (none)
+" cpp:        wget https://root.cern.ch/download/cling//cling_2020-11-05_ROOT-ubuntu2004.tar.bz2
+"             tar -xf cling_2020-11-05_ROOT-ubuntu2004.tar.bz2
+"             export PATH=$PATH:(/path/to/cling_2020-11-05_ROOT-ubuntu2004)/bin
+" cs:         (installed)
+" d:          sudo apt-get update -y
+"             sudo apt-get install -y dub
+" rust:       rustup toolchain add nightly
+"             cargo +nightly install papyrus
+" go:         go install -i https://github.com/sbinet/igo
+"             sudo mv (/path/to/$GOROOT)/bin/igo /usr/bin
+" fortran:    gem install frepl (requires Ruby)
+" pascal:     (none)
+" haskell:    (installed)
+" ocaml:      (installed)
+" lua:        (insatlled)
+" dosbatch:   (installed for WSL)
 " powershell: (installed for WSL)
-" sh: (preinstalled)
-" perl: (preinstalled)
-" lua: (installed)
-" php: (installed)
+" sh:         (preinstalled)
+" perl:       (preinstalled)
+" lua:        (installed)
+" php:        (installed)
 " javascript: (installed)
 " typescript: (installed)
-" coffee: (installed)
-" ruby: (installed)
-" crystal: git clone https://github.com/crystal-community/icr.git
-"          cd icr
-"          make (requires Make)
-"          sudo make install (requires Make)
-" elixir: (installed)
-" erlang: (installed)
-" st: (preinstalled)
-" nasm: sudo apt install libedit-dev
-"       git clone https://github.com/yrp604/rappel.git
-"       cd rappel
-"       CC=clang make (requires Clang)
-"       sudo mv bin/rappel /usr/bin
-" html: (none)
-" jsp: (none)
-
-"augroup test
-"    autocmd!
-"    autocmd BufLeave * echomsg "BufLeave, " . bufname('%') . ", " . bufnr('%')
-"    autocmd BufWinLeave * echomsg "BufWinLeave, " . bufwinnr('%') . ", " . bufwinid('%')
-"    autocmd BufHidden * echomsg "BufHidden"
-"    autocmd BufUnload * echomsg "BufUnload"
-"    autocmd BufDelete * echomsg "BufDelete"
-"    autocmd BufWipeout * echomsg "BufWipeout"
-"augroup END
+" coffee:     (installed)
+" ruby:       (installed)
+" crystal:    git clone https://github.com/crystal-community/icr.git
+"             cd icr
+"             make (requires Make)
+"             sudo make install (requires Make)
+" elixir:     (installed)
+" erlang:     (installed)
+" st:         (preinstalled)
+" nasm:       sudo apt install libedit-dev
+"             git clone https://github.com/yrp604/rappel.git
+"             cd rappel
+"             CC=clang make (requires Clang)
+"             sudo mv bin/rappel /usr/bin
+" html:       (none)
 
 let s:code_repl_nrs = {} " A map of (code buffer number) - (REPL buffer number)
 let s:last_leaved_buffer_nr = -1 " The number of the last leaved buffer
@@ -528,8 +514,7 @@ function! s:StartREPL()
         \'erlang'    : 'erl',
         \'st'        : 'gst',
         \'nasm'      : 'rappel',
-        \'html'      : '',
-        \'jsp'       : ''
+        \'html'      : ''
     \}
     " Get the command
     let l:command = get(l:command_map, &filetype, '')
