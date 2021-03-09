@@ -257,12 +257,6 @@ let g:clipboard = {
 \}
 set clipboard=unnamedplus " Use "+ register for clipboard
 
-"" Skeleton Settings
-augroup skeletons
-    autocmd!
-    autocmd BufNewFile pom.xml 0r skeletons/pom.xml
-augroup END
-
 
 
 """ Custom functions
