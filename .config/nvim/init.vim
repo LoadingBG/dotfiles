@@ -21,10 +21,12 @@ Plug 'rakr/vim-one'                                              " Color scheme
 Plug 'vim-airline/vim-airline'                                   " Custom status bar
 Plug 'ntpeters/vim-airline-colornum'                             " Colors the row number the same as the status bar
 
-Plug 'kingDaniel2004/NVim_Java_Highlighting'                     " Java advanced highlighting
 Plug 'octol/vim-cpp-enhanced-highlight'                          " C++ highlighting
 Plug 'NLKNguyen/vim-maven-syntax'                                " pom.xml advanced highlighting
 Plug 'mattn/emmet-vim'                                           " HTML advanced support
+Plug 'iamcco/markdown-preview.nvim'                              " Markdown preview
+Plug 'yuezk/vim-js'                                              " Javascript advanced highlighting
+Plug 'HerringtonDarkholme/yats.vim'                              " Typescript advanced highlighting
 Plug 'vim-crystal/vim-crystal'                                   " Crystal support
 Plug 'neovimhaskell/haskell-vim'                                 " Haskell highlighting
 Plug 'udalov/kotlin-vim'                                         " Kotlin support
@@ -76,6 +78,7 @@ let g:indent_guides_guide_size = 1            " The guide size is 1
 "" rainbow
 augroup rainbow_parens
     autocmd!
+    "autocmd FileType clojure RainbowToggleOn
     autocmd VimEnter,BufNewFile *.clj  RainbowToggleOn " Toggle the parentheses on Clojure files
     autocmd VimEnter,BufNewFile *.cljc RainbowToggleOn " Toggle the parentheses on Clojure files
     autocmd VimEnter,BufNewFile *.edn  RainbowToggleOn " Toggle the parentheses on EDN files
@@ -86,10 +89,9 @@ augroup END
 " Configuration:
 " Java -> Color '{' and '}'
 " Lisps -> Color '(', ')', '[', ']', '{', '}' and ','
-let s:colors = ['red', 'yellow', 'lightgreen', 'cyan', 'blue', 'magenta'] " The colors for the parentheses
 let g:rainbow_conf = {
     \'guifgs':      ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-    \'ctermfgs':    ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+    \'ctermfgs':    ['red', 'yellow', 'lightgreen', 'cyan', 'blue', 'magenta'],
     \'guis':        [''],
     \'cterms':      [''],
     \'operators':   '_,_',
@@ -99,16 +101,6 @@ let g:rainbow_conf = {
         \'java': {
             \'operators':   '',
             \'parentheses': ['start=/{/ end=/}/ fold'],
-            \'ctermfgs':    s:colors
-        \},
-        \'clojure': {
-            \'ctermfgs': s:colors
-        \},
-        \'lisp': {
-            \'ctermfgs': s:colors
-        \},
-        \'hy': {
-            \'ctermfgs': s:colors
         \}
     \}
 \}
@@ -124,24 +116,28 @@ colorscheme one             " Set the color scheme to vim-one
 let g:one_allow_italics = 1 " Use italics
 
 "" vim-airline
-let g:airline_powerline_fonts = 1                    " Use powerline
-let g:airline_theme = 'one'                          " Use vim-one theme for status bar
-let g:airline#extensions#branch#enabled = 1          " Make the Git branch appear in status line
-let g:airline#extensions#tabline#enabled = 1         " Enable tabline
-let g:airline#extensions#tabline#buffer_nr_show = 0  " Don't show buffer numbers in tabline
-let g:airline#extensions#tabline#buffer_idx_mode = 1 " Show buffer indices in tabline
-let g:airline#extensions#tabline#current_first = 0   " Don't show the current buffer as first in tabline
-let g:airline#extensions#tabline#show_splits = 1     " Show splits in tabline
-let g:airline#extensions#hunks#enabled = 0           " Disable showing a summary of changed hunks under source control
+"let g:airline#extensions#whitespace#enabled      = 0     " Don't detect whitespaces
+let g:airline_powerline_fonts                    = 1     " Use powerline
+let g:airline_theme                              = 'one' " Use vim-one theme for status bar
+let g:airline#extensions#branch#enabled          = 1     " Make the Git branch appear in status line
+let g:airline#extensions#tabline#enabled         = 1     " Enable tabline
+let g:airline#extensions#tabline#buffer_nr_show  = 0     " Don't show buffer numbers in tabline
+let g:airline#extensions#tabline#buffer_idx_mode = 1     " Show buffer indices in tabline
+let g:airline#extensions#tabline#current_first   = 0     " Don't show the current buffer as first in tabline
+let g:airline#extensions#tabline#show_splits     = 1     " Show splits in tabline
+let g:airline#extensions#hunks#enabled           = 0     " Disable showing a summary of changed hunks under source control
 " Switch to previous tab ([b)
 nmap [b <Plug>AirlineSelectPrevTab
 " Switch to next tab (]b)
 nmap ]b <Plug>AirlineSelectNextTab
 
 "" vim-cpp-enhanced-highlight
-let g:cpp_class_scope_highlight = 1     " Highlight class scope
+let g:cpp_class_scope_highlight     = 1 " Highlight class scope
 let g:cpp_member_variable_highlight = 1 " Highlight member variables
-let g:cpp_class_decl_highlight = 1      " Highlight class declarations
+let g:cpp_class_decl_highlight      = 1 " Highlight class declarations
+
+"" yats.vim
+set regexpengine=0 " Disable old RegEx engine
 
 "" vim-clojure-static
 " Highlight different words
@@ -154,7 +150,6 @@ let g:clojure_syntax_keywords = {
     \'clojureMacro':  ['a/go', 'a/go-loop', 'a/alt!', 'a/alt!!', 'a/thread',
                       \'s/fdef', 's/def', 's/*']
 \}
-let g:clojure_fuzzy_indent_patterns = ['^a/go-loop', '^s/fdef'] " Indent these words like 'loop'
 
 "" vim-crystal
 " Highlight variables and methods as identifiers
