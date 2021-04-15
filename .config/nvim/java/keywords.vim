@@ -132,24 +132,15 @@ syntax keyword javaTodo XXX NB     contained
 highlight def link javaTodo TODO
 
 " Keyword Block Tags
-syntax match   javaDocBlockTag '@author'     contained
-syntax match   javaDocBlockTag '@deprecated' contained
-syntax match   javaDocBlockTag '@exception'  contained
-syntax match   javaDocBlockTag '@param'      contained
-syntax match   javaDocBlockTag '@return'     contained
-syntax match   javaDocBlockTag '@see'        contained
-syntax match   javaDocBlockTag '@since'      contained
-syntax match   javaDocBlockTag '@throws'     contained
-syntax match   javaDocBlockTag '@value'      contained
-" Region Block Tags
-syntax region  javaDocBlockTag start='{@code'       end='}' contained
-syntax region  javaDocBlockTag start='{@docRoot'    end='}' contained
-syntax region  javaDocBlockTag start='{@inheritDoc' end='}' contained
-syntax region  javaDocBlockTag start='{@link'       end='}' contained
-syntax region  javaDocBlockTag start='{@linkplain'  end='}' contained
-syntax region  javaDocBlockTag start='{@literal'    end='}' contained
-syntax region  javaDocBlockTag start='{@see'        end='}' contained
-highlight def link javaDocBlockTag TODO
+syntax region javaDocBlockTag start='{@\(code\|doc[Rr]oot\|inherit[Dd]oc\|link\|linkplain\|literal\|value\)' end='}' contained
+syntax match  javaDocBlockTag '@\(exception\|param\|since\|throws\)' contained contains=javaDocBlockTagParam
+syntax match  javaDocBlockTag '@\(author\|deprecated\|return\|serial\|serialData\|serialField\|version\)' contained
+syntax region javaDocBlockTag contained matchgroup=javaDocBlockTag start='@see\s\+' matchgroup=NONE end='\_.'re=e-1 contains=javaDocSeeParam
+highlight def link javaDocBlockTag Special
+syntax match  javaDocBlockTagParam '\s\S\+' contained
+highlight def link javaDocBlockTagParam Function
+syntax match  javaDocSeeParam @"\_[^"]\+"\|<a\s\+\_.\{-}</a>\|\(\k\|\.\)*\(#\k\+\((\_[^)]\+)\)\=\)\=@ contained extend
+highlight def link javaDocSeeParam Function
 
 " HTML Tags
 syntax include @javaDocHtmlTag $VIMRUNTIME/syntax/html.vim
