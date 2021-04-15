@@ -55,7 +55,7 @@ highlight def link javaLabel Label
 
 " Operators
 syntax keyword javaOperator new instanceof skipwhite skipempty nextgroup=javaType,javaErrorClass,javaCommonClass,javaCollectionClass
-syntax match   javaOperator '\V\(+\|-\|*\|/\|%\|==\|!=\|<\|<=\|>\|>=\|!\|&\||\|~\|^\|?\|:\|->\)'
+syntax match   javaOperator '[+\-\~!\*/%<>=&\^|?:]'
 highlight def link javaOperator Operator
 
 " Exception Structures
@@ -88,7 +88,7 @@ syntax keyword javaPrimitive char
 syntax keyword javaPrimitive byte short int long
 syntax keyword javaPrimitive float double
 syntax keyword javaPrimitive var
-highlight def link javaPrimitive Type
+highlight def link javaPrimitive Number
 syntax match javaType '\v<\$*\u%(\w|\$)*>'
 highlight def link javaType Number
 
@@ -116,11 +116,41 @@ highlight def link javaDebug Debug
 syntax keyword javaReserved goto const _
 highlight def link javaReserved RedrawDebugRecompose
 
+
+
 " Comments
-sy match  javaComment '//.*'                contains=@javaTodos
-sy region javaComment start='/\*' end='\*/' contains=@javaTodos
+syntax match  javaComment '//.*'                contains=javaTodo
+syntax region javaComment start='/\*' end='\*/' contains=javaTodo
 highlight def link javaComment Comment
+syntax region javaDoc start='/\*\*' end='\*/'   contains=javaTodo,javaDocBlockTag,@javaDocHtmlTag
+highlight def link javaDoc Comment
+
+" Todos
 syntax keyword javaTodo TODO FIXME contained
 syntax keyword javaTodo NOTE       contained
 syntax keyword javaTodo XXX NB     contained
 highlight def link javaTodo TODO
+
+" Keyword Block Tags
+syntax match   javaDocBlockTag '@author'     contained
+syntax match   javaDocBlockTag '@deprecated' contained
+syntax match   javaDocBlockTag '@exception'  contained
+syntax match   javaDocBlockTag '@param'      contained
+syntax match   javaDocBlockTag '@return'     contained
+syntax match   javaDocBlockTag '@see'        contained
+syntax match   javaDocBlockTag '@since'      contained
+syntax match   javaDocBlockTag '@throws'     contained
+syntax match   javaDocBlockTag '@value'      contained
+" Region Block Tags
+syntax region  javaDocBlockTag start='{@code'       end='}' contained
+syntax region  javaDocBlockTag start='{@docRoot'    end='}' contained
+syntax region  javaDocBlockTag start='{@inheritDoc' end='}' contained
+syntax region  javaDocBlockTag start='{@link'       end='}' contained
+syntax region  javaDocBlockTag start='{@linkplain'  end='}' contained
+syntax region  javaDocBlockTag start='{@literal'    end='}' contained
+syntax region  javaDocBlockTag start='{@see'        end='}' contained
+highlight def link javaDocBlockTag TODO
+
+" HTML Tags
+syntax include @javaDocHtmlTag $VIMRUNTIME/syntax/html.vim
+"unlet b:current_syntax
