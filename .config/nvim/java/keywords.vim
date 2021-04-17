@@ -60,7 +60,7 @@ highlight def link javaOperator Operator
 
 " Exception Structures
 syntax keyword javaException throw
-syntax keyword javaException throws skipwhite skipempty nextgroup=javaType
+syntax keyword javaException throws skipwhite skipempty nextgroup=javaType,javaErrorClass,javaCommonClass,javaCollectionClass
 syntax keyword javaException try catch finally
 highlight def link javaException Exception
 
@@ -88,7 +88,7 @@ syntax keyword javaPrimitive char
 syntax keyword javaPrimitive byte short int long
 syntax keyword javaPrimitive float double
 syntax keyword javaPrimitive var
-highlight def link javaPrimitive Number
+highlight def link javaPrimitive Type
 syntax match javaType '\v<\$*\u%(\w|\$)*>'
 highlight def link javaType Number
 
@@ -100,8 +100,8 @@ syntax keyword javaDescription synchronized
 highlight def link javaDescription StorageClass
 
 " Structures
-syntax keyword javaStructure class interface enum record skipwhite skipempty nextgroup=javaType
-syntax keyword javaStructure extends implements          skipwhite skipempty nextgroup=javaType
+syntax keyword javaStructure class interface enum record skipwhite skipempty nextgroup=javaType,javaErrorClass,javaCommonClass,javaCollectionClass
+syntax keyword javaStructure extends implements          skipwhite skipempty nextgroup=javaType,javaErrorClass,javaCommonClass,javaCollectionClass
 highlight def link javaStructure Structure
 
 " Annotations
@@ -118,7 +118,9 @@ highlight def link javaReserved RedrawDebugRecompose
 
 
 
-" Comments
+
+
+"" Comments
 syntax match  javaComment '//.*'                contains=javaTodo
 syntax region javaComment start='/\*' end='\*/' contains=javaTodo
 highlight def link javaComment Comment
@@ -133,15 +135,20 @@ highlight def link javaTodo TODO
 
 " Keyword Block Tags
 syntax region javaDocBlockTag start='{@\(code\|doc[Rr]oot\|inherit[Dd]oc\|link\|linkplain\|literal\|value\)' end='}' contained
-syntax match  javaDocBlockTag '@\(exception\|param\|since\|throws\)' contained contains=javaDocBlockTagParam
+syntax match  javaDocBlockTag '@\(exception\|param\|see\|since\|throws\)' contained contains=javaDocBlockTagParam
 syntax match  javaDocBlockTag '@\(author\|deprecated\|return\|serial\|serialData\|serialField\|version\)' contained
-syntax region javaDocBlockTag contained matchgroup=javaDocBlockTag start='@see\s\+' matchgroup=NONE end='\_.'re=e-1 contains=javaDocSeeParam
 highlight def link javaDocBlockTag Special
-syntax match  javaDocBlockTagParam '\s\S\+' contained
+syntax match  javaDocBlockTagParam '.+' contained
 highlight def link javaDocBlockTagParam Function
-syntax match  javaDocSeeParam @"\_[^"]\+"\|<a\s\+\_.\{-}</a>\|\(\k\|\.\)*\(#\k\+\((\_[^)]\+)\)\=\)\=@ contained extend
-highlight def link javaDocSeeParam Function
 
 " HTML Tags
 syntax include @javaDocHtmlTag $VIMRUNTIME/syntax/html.vim
-"unlet b:current_syntax
+
+
+
+
+
+"" Errors and Exceptions
+syntax keyword javaErrorClass Throwable
+syntax match   javaErrorClass '\v(\$*\u%(\w|\$)*)?(Exception|Error)'
+highlight def link javaErrorClass jsTemplateBraces
