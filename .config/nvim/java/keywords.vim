@@ -150,5 +150,5 @@ syntax include @javaDocHtmlTag $VIMRUNTIME/syntax/html.vim
 
 "" Errors and Exceptions
 syntax keyword javaErrorClass Throwable
-syntax match   javaErrorClass '\v(\$*\u%(\w|\$)*)?(Exception|Error)\b'
+syntax match   javaErrorClass '\v<(\$*\u%(\w|\$)*)?(Exception|Error)>'
 highlight def link javaErrorClass jsTemplateBraces
