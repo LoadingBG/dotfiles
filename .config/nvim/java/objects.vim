@@ -12,6 +12,7 @@ syntax keyword javaCommonClass java.lang.StringBuffer  StringBuffer
 syntax keyword javaCommonClass java.lang.StringBuilder StringBuilder
 " Utility Classes
 syntax keyword javaCommonClass java.lang.System        System
+syntax keyword javaCommonClass java.util.Arrays        Arrays
 syntax keyword javaCommonClass java.util.Random        Random
 syntax keyword javaCommonClass java.util.Scanner       Scanner
 " Interfaces
