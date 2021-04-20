@@ -143,7 +143,7 @@ highlight def link javaDocBlockTagParam Function
 
 " HTML Tags
 syntax include @javaDocHtmlTag $VIMRUNTIME/syntax/html.vim
-unlet b:current_syntax
+let b:current_syntax = 'java.vim'
 syntax spell default
 
 
