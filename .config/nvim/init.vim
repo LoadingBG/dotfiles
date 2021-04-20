@@ -136,6 +136,9 @@ let g:cpp_class_scope_highlight     = 1 " Highlight class scope
 let g:cpp_member_variable_highlight = 1 " Highlight member variables
 let g:cpp_class_decl_highlight      = 1 " Highlight class declarations
 
+" vim-maven-syntax
+autocmd VimEnter,BufNewFile pom.xml set filetype=xml syntax=xml.maven
+
 "" yats.vim
 set regexpengine=0 " Disable old RegEx engine
 
