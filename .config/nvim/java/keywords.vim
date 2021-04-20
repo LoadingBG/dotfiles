@@ -134,9 +134,9 @@ syntax keyword javaTodo XXX NB     contained
 highlight def link javaTodo TODO
 
 " Keyword Block Tags
-syntax region javaDocBlockTag start='{@\(code\|doc[Rr]oot\|inherit[Dd]oc\|link\|linkplain\|literal\|value\)' end='}' contained
+syntax region javaDocBlockTag start='{@\(code\|docRoot\|inheritDoc\|link\|linkplain\|literal\|value\)' end='}' contained
 syntax match  javaDocBlockTag '@\(exception\|param\|see\|since\|throws\)' contained contains=javaDocBlockTagParam
-syntax match  javaDocBlockTag '@\(author\|deprecated\|return\|serial\|serialData\|serialField\|version\)' contained
+syntax match  javaDocBlockTag '@\(author\|deprecated\|return\|serial\|serialData\|serialField\|version\|apiNote\)' contained
 highlight def link javaDocBlockTag Special
 syntax match  javaDocBlockTagParam '.+' contained
 highlight def link javaDocBlockTagParam Function
