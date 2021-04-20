@@ -124,7 +124,7 @@ highlight def link javaReserved RedrawDebugRecompose
 syntax match  javaComment '//.*'                contains=javaTodo
 syntax region javaComment start='/\*' end='\*/' contains=javaTodo
 highlight def link javaComment Comment
-syntax region javaDoc start='/\*\*' end='\*/'   contains=javaTodo,javaDocBlockTag,@javaDocHtmlTag
+syntax region javaDoc start='/\*\*' end='\*/'   contains=javaTodo,javaDocBlockTag,javaDocHtmlTag
 highlight def link javaDoc Comment
 
 " Todos
@@ -142,9 +142,12 @@ syntax match  javaDocBlockTagParam '.+' contained
 highlight def link javaDocBlockTagParam Function
 
 " HTML Tags
-syntax include @javaDocHtmlTag $VIMRUNTIME/syntax/html.vim
-let b:current_syntax = 'java.vim'
-syntax spell default
+syntax region javaDocHtmlTag start='<[^/]' end='>'  contained contains=javaDocHtmlTagN
+syntax region javaDocHtmlTag start='</'    end='>'  contained contains=javaDocHtmlTagN
+highlight def link javaDocHtmlTag htmlTag
+syntax match  javaDocHtmlTagN '<\s*[-a-zA-Z0-9]\+'hs=s+1  contained
+syntax match  javaDocHtmlTagN '</\s*[-a-zA-Z0-9]\+'hs=s+2 contained
+highlight def link javaDocHtmlTagN htmlTagN
 
 
 
