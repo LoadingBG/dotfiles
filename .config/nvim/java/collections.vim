@@ -9,6 +9,13 @@ syntax keyword javaCollectionClass             javax.management.relation.RoleLis
 syntax keyword javaCollectionClass             javax.management.relation.RoleUnresolvedList RoleUnresolvedList
 syntax keyword javaCollectionClass             java.util.Vector Vector
 syntax keyword javaCollectionClass         java.util.Stack Stack
+syntax keyword javaCollectionClass     java.util.AbstractMap AbstractMap
+syntax keyword javaCollectionClass         java.util.EnumMap EnumMap
+syntax keyword javaCollectionClass         java.util.HashMap HashMap
+syntax keyword javaCollectionClass             java.util.LinkedHashMap LinkedHashMap
+syntax keyword javaCollectionClass         java.util.IdentityHashMap IdentityHashMap
+syntax keyword javaCollectionClass         java.util.TreeMap TreeMap
+syntax keyword javaCollectionClass         java.util.WeakHashMap WeakHashMap
 syntax keyword javaCollectionClass     java.util.AbstractQueue AbstractQueue
 syntax keyword javaCollectionClass         java.util.concurrent.ArrayBlockingQueue ArrayBlockingQueue
 syntax keyword javaCollectionClass         java.util.concurrent.ConcurrentLinkedQueue ConcurrentLinkedQueue
@@ -37,6 +44,7 @@ syntax keyword javaCollectionClass     java.util.concurrent.BlockingQueue Blocki
 syntax keyword javaCollectionClass     java.util.concurrent.BlockingDeque BlockingDeque
 syntax keyword javaCollectionClass     java.util.Deque Deque
 syntax keyword javaCollectionClass     java.util.List List
+syntax keyword javaCollectionClass     java.util.Map Map
 syntax keyword javaCollectionClass     java.util.NavigateableSet NavigateableSet
 syntax keyword javaCollectionClass     java.util.Queue Queue
 syntax keyword javaCollectionClass     java.util.Set Set
