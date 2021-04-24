@@ -5,6 +5,7 @@ syntax keyword javaCommonClass java.lang.Double        Double
 syntax keyword javaCommonClass java.lang.Float         Float
 syntax keyword javaCommonClass java.lang.Integer       Integer
 syntax keyword javaCommonClass java.lang.Long          Long
+syntax keyword javaCommonClass java.lang.Number        Number
 syntax keyword javaCommonClass java.lang.Object        Object
 " Char Sequences
 syntax keyword javaCommonClass java.lang.String        String
