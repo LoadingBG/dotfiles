@@ -127,7 +127,7 @@ export -f cpdt
 
 # Creates a new directory and moves into it
 mkcdir() {
-    mkdir "$1"
+    mkdir -p "$1"
     cd "$1"
 }
 export -f mkcdir
@@ -141,23 +141,13 @@ export -f rmfld
 
 export DISPLAY="`grep nameserver /etc/resolv.conf | sed 's/nameserver //'`:0"
 
-export PATH="/home/loadingbg/repls/cling_2020-11-05_ROOT-ubuntu2004/bin:/home/loadingbg/.local/bin:/home/loadingbg/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/"
-
-export CATALINA_HOME="/usr/local/tomcat"
+declare -x PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/home/loadingbg/repls/cling_2020-11-05_ROOT-ubuntu2004/bin"
 
 # Change the default directory to ~
 cd
 
-# Add Tomcat commands
-tcstart() {
-    sudo /usr/local/tomcat/bin/startup.sh
-}
-export -f tcstart
-
-tcstop() {
-    sudo /usr/local/tomcat/bin/shutdown.sh
-}
-export -f tcstop
+# Start MySQL
+sudo service mysql start
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/loadingbg/.sdkman"
